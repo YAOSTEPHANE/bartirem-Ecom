@@ -10,7 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HOME, name='home'),
     path('base/', views.BASE, name='base'),
-    path('products/', views.PRODUCT, name='product'),
+    path('products/', views.PRODUCT, name='products'),
     path('products/<str:id>', views.PRODUCT_DETAIL_PAGE, name='product_details'),
     
     
@@ -32,6 +32,7 @@ urlpatterns = [
          views.item_decrement, name='item_decrement'),
     path('cart/cart_clear/', views.cart_clear, name='cart_clear'),
     path('cart/cart-detail/',views.cart_detail,name='cart_detail'),
+    path('cart/checkout/', views.Check_out, name='checkout'),
     
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
