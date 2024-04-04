@@ -7,6 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 
+import razorpay
+
+client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
 
 def BASE(request):
     return render(request, 'Main/base.html')
@@ -213,4 +217,22 @@ def cart_detail(request):
 
 
 def Check_out(request):
+    payment = client.order.create({
+        'amount': 500, 
+        'currency': 
+            'INR', 
+            'payment_capture': 
+                '1'})
+    print(payment)
     return render(request, 'Cart/checkout.html')
+
+
+def PLACE_ORDER(request):
+    if request.method == "POST":
+        firstname = request.POST.get('firstname')
+        
+        
+        
+        
+        print(firstname)
+    return render(request, 'Cart/placeorder.html')

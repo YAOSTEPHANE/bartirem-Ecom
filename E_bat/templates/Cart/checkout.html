@@ -2,38 +2,35 @@
 {% load cart_tag %}
 
 <!-- checkout area start -->
+<form method="post" action="{% url 'place_order' %}">
+    {% csrf_token %}
 <div class="checkout-area pt-100px pb-100px">
   <div class="container">
     <div class="row">
       <div class="col-lg-7">
         <div class="billing-info-wrap">
-          <h3>Billing Details</h3>
+          <h3>Détails de facturation</h3>
           <div class="row">
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Nom</label>
-                <input type="text" value="{{user.first_name}}" readonly />
+                <input type="text" value="{{user.first_name}}" name="firstname" readonly />
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Prénoms</label>
-                <input type="text" value="{{user.last_name}}" readonly />
+                <input type="text" value="{{user.last_name}}" name="lastname" readonly />
               </div>
             </div>
-            <div class="col-lg-12">
-              <div class="billing-info mb-4">
-                <label>Company Name</label>
-                <input type="text" />
-              </div>
-            </div>
+            
             <div class="col-lg-12">
               <div class="billing-select mb-4">
-                <label>Country</label>
-                <select>
-                  <option>Select a country</option>
-                  <option>Azerbaijan</option>
-                  <option>Bahamas</option>
+                <label>Régions</label>
+                <select name="country">
+                  <option>Choisir la Région</option>
+                  <option>Abobo</option>
+                  <option>Anyama</option>
                   <option>Bahrain</option>
                   <option>Bangladesh</option>
                   <option>Barbados</option>
@@ -47,145 +44,43 @@
                   class="billing-address"
                   placeholder="Sous-quartier"
                   type="text"
+                  name="address"
                 />
-                <input placeholder="Extension" type="text" />
+                <input placeholder="Extension" type="text" name="address" />
               </div>
             </div>
             <div class="col-lg-12">
               <div class="billing-info mb-4">
                 <label>Commune</label>
-                <input type="text" />
+                <input type="text" name="city" />
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Numero 2</label>
-                <input type="text" />
+                <input type="text" name="phone" />
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Point de repère</label>
-                <input type="text" />
+                <input type="text" name="Landmark" />
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Numero 1</label>
-                <input type="text" />
+                <input type="text" name="phone" />
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Email Address</label>
-                <input type="text" value="{{user.email}}" readonly />
+                <input type="text" value="{{user.email}}" name="address" name="email" readonly />
               </div>
             </div>
           </div>
-          <div class="checkout-account mb-30px">
-            <input class="checkout-toggle2 w-auto h-auto" type="checkbox" />
-            <label>Creer un Compte?</label>
-          </div>
-          <div class="checkout-account-toggle open-toggle2 mb-30">
-            <input placeholder="Email" type="email" />
-            <input placeholder="Mot de passe" type="password" />
-            <button class="btn-hover checkout-btn" type="submit">
-              Creer un Compte
-            </button>
-          </div>
-          <div class="additional-info-wrap">
-            <h4>Information Supplementaire</h4>
-            <div class="additional-info">
-              <label>Order notes</label>
-              <textarea
-                placeholder="Notes about your order, e.g. special notes for delivery. "
-                name="message"
-              ></textarea>
-            </div>
-          </div>
-          <div class="checkout-account mt-25">
-            <input class="checkout-toggle w-auto h-auto" type="checkbox" />
-            <label>Addresse de Livraison differente?</label>
-          </div>
-          <div class="different-address open-toggle mt-30px">
-            <div class="row">
-              <div class="col-lg-6 col-md-6">
-                <div class="billing-info mb-4">
-                  <label>First Name</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <div class="billing-info mb-4">
-                  <label>Last Name</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="billing-info mb-4">
-                  <label>Company Name</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="billing-select mb-4">
-                  <label>Country</label>
-                  <select>
-                    <option>Select a country</option>
-                    <option>Azerbaijan</option>
-                    <option>Bahamas</option>
-                    <option>Bahrain</option>
-                    <option>Bangladesh</option>
-                    <option>Barbados</option>
-                  </select>
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="billing-info mb-4">
-                  <label>Street Address</label>
-                  <input
-                    class="billing-address"
-                    placeholder="House number and street name"
-                    type="text"
-                  />
-                  <input
-                    placeholder="Apartment, suite, unit etc."
-                    type="text"
-                  />
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="billing-info mb-4">
-                  <label>Town / City</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <div class="billing-info mb-4">
-                  <label>State / County</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <div class="billing-info mb-4">
-                  <label>Point de repère</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <div class="billing-info mb-4">
-                  <label>Phone</label>
-                  <input type="text" />
-                </div>
-              </div>
-              <div class="col-lg-6 col-md-6">
-                <div class="billing-info mb-4">
-                  <label>Email Address</label>
-                  <input type="text" />
-                </div>
-              </div>
-            </div>
-          </div>
+         
         </div>
       </div>
       <div class="col-lg-5 mt-md-30px mt-lm-30px">
@@ -217,14 +112,14 @@
               </div>
               <div class="your-order-bottom">
                 <ul>
-                  <li class="your-order-shipping">Shipping</li>
-                  <li>Free shipping</li>
+                  <li class="your-order-shipping">Frais de livraison</li>
+                  <li>1100 FCFA</li>
                 </ul>
               </div>
               <div class="your-order-total">
                 <ul>
                   <li class="order-total">Montant Total</li>
-                  <li>{{cart_total_amount}} FCFA</li>
+                  <li>{{cart_total_amount|add:1100}} FCFA</li>
                 </ul>
               </div>
             </div>
@@ -307,13 +202,14 @@
             </div>
           </div>
           <div class="Place-order mt-25">
-            <a class="btn-hover" href="#">Place Order</a>
+            <a class="btn-hover" href="#"><button type="submit" class="text-light">Continue</button></a>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+</form>
 <!-- checkout area end -->
 
 {%endblock%}
