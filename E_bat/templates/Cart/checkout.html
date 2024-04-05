@@ -15,6 +15,8 @@
               <div class="billing-info mb-4">
                 <label>Nom</label>
                 <input type="text" value="{{user.first_name}}" name="firstname" readonly />
+                  <input type="text" value="{{order_id}}" name="order_id" hidden/>
+                  <input type="text" value="{{payment}}" name="payment" hidden/>
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -27,7 +29,7 @@
             <div class="col-lg-12">
               <div class="billing-select mb-4">
                 <label>Régions</label>
-                <select name="country">
+                <select name="state">
                   <option>Choisir la Région</option>
                   <option>Abobo</option>
                   <option>Anyama</option>
@@ -64,7 +66,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Point de repère</label>
-                <input type="text" name="Landmark" />
+                <input type="text" name="landmark" />
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -76,7 +78,7 @@
             <div class="col-lg-6 col-md-6">
               <div class="billing-info mb-4">
                 <label>Email Address</label>
-                <input type="text" value="{{user.email}}" name="address" name="email" readonly />
+                <input type="text" value="{{user.email}}" name="email" readonly />
               </div>
             </div>
           </div>
@@ -119,7 +121,7 @@
               <div class="your-order-total">
                 <ul>
                   <li class="order-total">Montant Total</li>
-                  <li>{{cart_total_amount|add:1100}} FCFA</li>
+                  <li><input value="{{cart_total_amount|add:1100}}  FCFA" name="amount" readonly></li>
                 </ul>
               </div>
             </div>

@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from batirem.models import Product, Categories, Filter_Price, Color, Brand, Contact_us
+from batirem.models import Product, Categories, Filter_Price, Color, Brand, Contact_us, Order, OrderItem
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
-
+from django.views.decorators.csrf import csrf_exempt
 import razorpay
 
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
@@ -224,15 +224,92 @@ def Check_out(request):
             'payment_capture': 
                 '1'})
     print(payment)
-    return render(request, 'Cart/checkout.html')
+    order_id = payment['id']
+    context = {
+        'order_id':order_id,
+        'payment':payment,
+
+    }
+    print(order_id)
+    return render(request, 'Cart/checkout.html', context)
 
 
 def PLACE_ORDER(request):
     if request.method == "POST":
+        uid = request.session.get('_auth_user_id')
+        user = User.objects.get(id=uid)
+        cart = request.session.get('cart')
+        print(cart)
         firstname = request.POST.get('firstname')
-        
-        
-        
-        
-        print(firstname)
-    return render(request, 'Cart/placeorder.html')
+        lastname = request.POST.get('lastname')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        phone = request.POST.get('phone')
+        landmark = request.POST.get('landmark')
+        email = request.POST.get('email')
+        amount = request.POST.get('amount')
+
+
+
+
+        order_id = request.POST.get('order_id')
+        payment = request.POST.get('payment')
+
+        context ={
+            'order_id':order_id
+        }
+
+
+        order = Order(
+            user = user,
+            firstname = firstname,
+            lastname = lastname,
+            address = address,
+            city = city,
+            #country = country,
+            phone = phone,
+            landmark = landmark,
+            email = email,
+            payment_id = order_id,
+            amount = amount,
+
+        )
+        order.save()
+        for i in cart:
+            a = int(cart[i]['price'])
+            b = cart[i]['quantity']
+
+            print(type(a))
+            print(type(b))
+
+            total = a * b
+            print(total)
+            
+            item = OrderItem(
+                order = order,
+                product = cart[i]['name'],
+                image = cart[i]['image'],
+                quantity = cart[i]['quantity'],
+                price = cart[i]['price'],
+                total = total,
+
+            )
+            item.save()
+
+
+    return render(request, 'Cart/placeorder.html', context)
+
+@csrf_exempt
+def success(request):
+    if request.method == "POST":
+        a = request.POST
+        order_id = ""
+        for key, val in a.items():
+            if key == 'razorpay_order_id':
+                order_id = val
+                break
+
+        user = Order.objects.filter(payment_id = order_id).first()
+        user.paid = True
+        user.save()
+    return render(request, 'Cart/thank_you.html')
